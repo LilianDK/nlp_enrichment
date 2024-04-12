@@ -4,12 +4,13 @@ import pandas as pd
 import ollama
 from textblob import TextBlob
 from tika import parser
-path = "../data/"
+
+path = "./data/"
 dir_list = os.listdir(path)
 element = 1
 text = parser.from_file(f'{path}/{dir_list[element]}')
-df = pd.DataFrame(text)
-print(df)
+df = text[0]
+result = df.row.str.split(' ', expand=True)
 
 ollama.pull('zeffmuks/universal-ner')
 print("starting gen")
