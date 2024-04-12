@@ -14,4 +14,7 @@ format:
 lint:
 	#pylint --disable=R,C hello.py
 
+ollama:
+	ollama serve
+
 all: install lint test
