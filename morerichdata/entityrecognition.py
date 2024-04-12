@@ -9,8 +9,6 @@ path = "./data/"
 dir_list = os.listdir(path)
 element = 1
 text = parser.from_file(f'{path}/{dir_list[element]}')
-df = text[0]
-result = df.row.str.split(' ', expand=True)
 
 ollama.pull('zeffmuks/universal-ner')
 print("starting gen")

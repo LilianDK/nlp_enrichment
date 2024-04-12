@@ -16,6 +16,8 @@ lint:
 	#pylint --disable=R,C hello.py
 
 ollama:
+	curl -fsSL https://ollama.com/install.sh | sh
 	ollama serve
 
 all: install lint test
+
