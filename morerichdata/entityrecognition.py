@@ -4,20 +4,26 @@ import pandas as pd
 import ollama
 from textblob import TextBlob
 from tika import parser
-path = "../data/"
+
+path = "./data/"
 dir_list = os.listdir(path)
-element = 0
+element = 1
 text = parser.from_file(f'{path}/{dir_list[element]}')
-clean_text = str(blob.replace("\n", ""))
-blob = TextBlob(text["content"])
 
 ollama.pull('zeffmuks/universal-ner')
-ollama_result = ollama.generate(model='zeffmuks/universal-ner', prompt=f'Please extract the entities from this text: {text["content"]}')
-print(ollama_result)
+print("starting gen")
 
-ner_results = nlp(clean_text)
-df = pd.DataFrame(ner_results)
-print(df)
+stream = ollama.chat(
+    model='zeffmuks/universal-ner',
+    messages=[
+        {'role': 'system', 'content': 'A virtual assistant answers questions from a user based on the provided text.'},  
+        {'role': 'user', 'content': f'Text: {text["content"]}'},  {'role': 'assistant', 'content': "I’ve read this text."},  
+        {'role': 'user', 'content': f'what describes concepts in this text?'}],
+    stream=True,
+)
 
-if __name__ == '__main__':
-  fire.Fire()
+for chunk in stream:
+  print(chunk['message']['content'], end='', flush=True)
+
+#if __name__ == '__main__':
+ # fire.Fire()
